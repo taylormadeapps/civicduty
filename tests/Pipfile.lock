@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "2f32b2af0d5064860427675de4fa1eb652ef7b8d8d3b7eb51606f33c9923df1f"
+            "sha256": "6beb3b246c4d261684a84a1cf1fe420ac8e99c1a46855128ce95736879b3be54"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -303,6 +303,10 @@
             "markers": "python_full_version >= '3.7.0'",
             "version": "==3.1.0"
         },
+        "civicrmapi": {
+            "path": "./../src/civicrmapi",
+            "version": "==0.1.dev0"
+        },
         "click": {
             "hashes": [
                 "sha256:7682dc8afb30297001674575ea00d1814d808d6a36af415a82bd481d37ba7b8e",
@@ -554,6 +558,14 @@
             ],
             "markers": "python_version < '3.9'",
             "version": "==5.12.0"
+        },
+        "invoke": {
+            "hashes": [
+                "sha256:277894c57fa2b77f22ed3c7726fb8689773301e4497ccb2a59f19bc7bbbe5b4a",
+                "sha256:409c9cff8325d697f44308fda3026a97691972adc4ab81575d655a2100b50abc"
+            ],
+            "markers": "python_version >= '3.6'",
+            "version": "==2.1.0"
         },
         "jinja2": {
             "hashes": [
@@ -873,7 +885,7 @@
                 "sha256:ecbbc51391248116c0a055899e6c3e7ffbb11fb5e2a4cd6f2d0b93272118a209",
                 "sha256:f4a2b50e2b03d5776e7f21af73e2070e1b5c0d0df255a827e7c632962f8315af"
             ],
-            "markers": "python_version >= '3.7'",
+            "index": "pypi",
             "version": "==1.10.7"
         },
         "pygments": {

@@ -1,9 +1,6 @@
 import os
-print(os.environ['PYTHONPATH'])
-
+print(f"module path is {os.sys.path}")
+#print(os.environ)
 import prefect_civi
 
-
-print(os.environ['PYTHONPATH'])
-print("hello foo world")
 prefect_civi.hello()
