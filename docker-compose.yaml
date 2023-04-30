@@ -1,0 +1,113 @@
+version: '3.5'
+
+networks:
+  prefect:
+    name: prefect
+
+
+services:
+  # --------------------------------------#
+  #               Postgres                #
+  # --------------------------------------#
+  prefect-postgres:
+    container_name: prefect-postgres
+    image: postgres:14
+    command:
+      - postgres
+      - -c
+      - max_connections=150
+    environment:
+      POSTGRES_USER: prefect
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: prefect_server
+    restart: unless-stopped
+    healthcheck:
+      interval: 10s
+      retries: 60
+      start_period: 2s
+      test: pg_isready -q -d $${POSTGRES_DB} -U $${POSTGRES_USER} | grep "accepting connections" || exit 1
+      timeout: 2s
+    ports:
+    - published: 5433
+      target: 5432
+    restart: on-failure
+    volumes:
+      - ./volumes/postgres:/var/lib/postgresql/data
+    networks:
+      - prefect
+  # --------------------------------------#
+  #             Prefect Server            #
+  # --------------------------------------#
+  prefect-server:
+    container_name: prefect-server
+    image: ${PREFECT_SERVER_IMAGE}
+    command:
+      - prefect
+      - orion
+      - start
+    ports:
+      - 4200:4200
+    expose:
+      - "4200"
+    depends_on:
+      prefect-postgres:
+        condition: service_started
+    volumes:
+      - ${PWD}/volumes/prefect:/root/.prefect
+      - ${PWD}/flows:/flows
+    environment:
+      PREFECT_ORION_API_HOST: 0.0.0.0
+      PREFECT_ORION_DATABASE_CONNECTION_URL: postgresql+asyncpg://prefect:${POSTGRES_PASSWORD}@prefect-postgres:5432/prefect_server
+      PREFECT_ORION_ANALYTICS_ENABLED: "false"
+      PREFECT_LOGGING_SERVER_LEVEL: DEBUG
+      PREFECT_API_URL: ${PREFECT_API_URL}
+    restart: unless-stopped
+    networks:
+      - prefect
+  # --------------------------------------#
+  #             Docker Agent              #
+  # --------------------------------------#
+  prefect-agent:
+    container_name: prefect-agent
+    image: ${PREFECT_AGENT_IMAGE}
+    command:
+      - prefect
+      - agent
+      - start
+      - -q
+      - default
+    depends_on:
+      prefect-server:
+        condition: service_started
+    environment:
+      PREFECT_API_URL: http://prefect-server:4200/api
+      PREFECT_LOGGING_LEVEL: DEBUG
+      #DOCKER_HOST: unix://var/run/docker.sock
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${PWD}/volumes/prefect:/root/.prefect
+      - ${PWD}/flows:/flows
+    networks:
+      - prefect
+
+  # --------------------------------------#
+  #         Minio for storage             #
+  # --------------------------------------#
+  minio:
+    container_name: minio
+    image: minio/minio
+    environment:
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
+    volumes:
+      - ./volumes/minio:/data
+    entrypoint: /bin/bash 
+    command: "-c 'mkdir -p /data/prefect-flows && sleep 10 && minio server /data --console-address :9001'"
+    restart: unless-stopped
+    ports:
+      - published: 9000
+        target: 9000
+      - published: 9001
+        target: 9001
+    networks:
+      - prefect
