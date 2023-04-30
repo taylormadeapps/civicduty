@@ -1,7 +1,0 @@
-volumes
-.env
-*.bak
-prefect.env
-*venv*
-
-*.pyc

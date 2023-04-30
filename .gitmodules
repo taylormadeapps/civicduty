@@ -1,7 +1,7 @@
-[submodule "civicrmapi"]
-    path = src/civicrmapi
-    url =git@github.com:/taylormadeapps/civicrmapi
 
-[submodule "prefect-civi"]
-    path = src/prefect-civi
-    url = git@github.com:taylormadeapps/prefect-civi.git
+[submodule "src/civicrmapi"]
+	path = src/civicrmapi
+	url = git@github.com:/taylormadeapps/civicrmapi
+[submodule "src/prefect-civi"]
+	path = src/prefect-civi
+	url = git@github.com:/taylormadeapps/prefect-civi
