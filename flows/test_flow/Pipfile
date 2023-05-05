@@ -5,9 +5,9 @@ name = "pypi"
 
 [packages]
 prefect = "*"
-civicrmapi = {path = "./../src/civicrmapi"}
+civicrmapi = {path = "./../../src/civicrmapi"}
 pydantic = "*"
-prefect-civi = {path = "./../src/prefect-civi"}
+prefect-civi = {path = "./../../src/prefect-civi"}
 
 [dev-packages]
 setuptools = "*"

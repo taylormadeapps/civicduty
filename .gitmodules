@@ -5,3 +5,6 @@
 [submodule "src/prefect-civi"]
 	path = src/prefect-civi
 	url = git@github.com:/taylormadeapps/prefect-civi
+[submodule "src/prefect-openai"]
+	path = src/prefect-openai
+	url = git@github.com:PrefectHQ/prefect-openai.git

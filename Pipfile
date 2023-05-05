@@ -5,13 +5,11 @@ name = "pypi"
 
 [packages]
 prefect = "*"
-civicrmapi = {path = "./../src/civicrmapi"}
-pydantic = "*"
+civicrmapi = {path = "./src/civicrmapi"}
+prefect-civi = {path = "./src/prefect-civi"}
 
 [dev-packages]
-setuptools = "*"
 ikp3db = "*"
 
 [requires]
 python_version = "3.7"
-python_full_version = "3.7.3"
